@@ -41,7 +41,7 @@ app.use('/api/v1/post', authUser, PostRouter)
 app.use(NotFoundController)
 app.use(MiddlewareError)
     // port
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 const startApp = async() => {
     try {
