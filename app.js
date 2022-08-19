@@ -43,12 +43,15 @@ app.use(
         })
     )
     // port
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 3000
 
 const startApp = async() => {
     try {
         await mongoose.connect(process.env.MONGO_URL)
-        app.listen(port, () => console.log(`app is listening at port ${port}...`))
+
+        app.listen(port || 3000, () =>
+            console.log(`app is listening at port ${port}...`)
+        )
     } catch (error) {
         console.log(error)
     }
