@@ -18,18 +18,10 @@ const MiddlewareError = require('./middlewares/error')
 // middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.set('trust proxy', 1)
-app.use(
-    rateLimiter({
-        windowMs: 15 * 60 * 1000, // 15 minutes
-        max: 100,
-        standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-        legacyHeaders: false,
-    })
-)
 app.use(helmet())
 app.use(cors())
 app.use(xss())
+app.use(rateLimiter())
 
 // routers
 
@@ -40,6 +32,16 @@ app.use('/api/v1/auth', AuthRouter)
 app.use('/api/v1/post', authUser, PostRouter)
 app.use(NotFoundController)
 app.use(MiddlewareError)
+
+app.set('trust proxy', 1)
+app.use(
+        rateLimiter({
+            windowMs: 15 * 60 * 1000, // 15 minutes
+            max: 100,
+            standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+            legacyHeaders: false,
+        })
+    )
     // port
 const port = process.env.PORT || 8080
 
